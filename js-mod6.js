@@ -24,8 +24,12 @@ const char_array = (text) =>
     .split("") // generate array
     .filter((w) => (w !== "")) // remove empty string elem
 
-// TODO
-const word_array = (text) => []
+const word_array = (text) =>
+    clean_string(text)
+    .replace(/^ /, "")
+    .replace(/ $/, "")
+    .split(" ")
+    .filter((w) => (w !== ""))
 
 const sentence_array = (text) =>
     clean_string(text)
@@ -59,7 +63,7 @@ const count = () => {
     } = getIO();
 
     let result = `Caracteres: ${char_array(text).length}\n`;
-    result += `Palabras: ${"No implementado"/*TO DO*/}\n`;
+    result += `Palabras: ${word_array(text).length}\n`;
     result += `Frases: ${sentence_array(text).length}\n`;
     result += `Lineas: ${text.split("\n").length}\n`;
 
@@ -85,8 +89,24 @@ const letter_index = () => {
     view.innerHTML = result;
 };
 
-// TODO
-const word_index = () => {};
+const word_index = () => {
+    let {
+        text,
+        view
+    } = getIO();
+
+    let ordered_words =
+        word_array(text)
+        .map(el => el.toLowerCase())
+        .sort();
+    
+    let result =
+        repetitions(ordered_words)
+        .map(el => `${el.s}: ${el.n}`)
+        .join("\n");
+    
+    view.innerHTML = result;
+};
 
 const sentence_index = () => {
     let {
@@ -129,8 +149,27 @@ const search_letters = () => {
     view.innerHTML = result;
 };
 
-// TODO
-const search_words = () => {};
+const search_words = () => {
+    let {
+        text,
+        view,
+        search
+    } = getIO();
+
+    let searched_words =
+        word_array(text)
+        .filter(el => el.includes(search))
+        .sort()
+    
+    let result = `Hay ${searched_words.length} palabras que contienen '${search}'.\n\n`
+
+    result +=
+        repetitions(searched_words)
+        .map(el => `${el.n} repeticiones de:   ${el.s}`)
+        .join("\n");
+    
+    view.innerHTML = result;
+};
 
 const search_sentences = () => {
     let {
