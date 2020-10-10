@@ -26,8 +26,8 @@ const char_array = (text) =>
 
 const word_array = (text) =>
     clean_string(text)
-    .replace(/^ /, "")
-    .replace(/ $/, "")
+    .replace(/[\s]*(.[\.:;?!,¿¡])[\s]*/gm, "$1") // elimina espacios en blanco entre signos de puntuación
+    .replace(/[\.:;?!,¿¡]+/gm, " ") // transforma signos de puntuación en espacios en blanco
     .split(" ")
     .filter((w) => (w !== ""))
 
@@ -158,6 +158,7 @@ const search_words = () => {
 
     let searched_words =
         word_array(text)
+        .map(el => el.toLowerCase())
         .filter(el => el.includes(search))
         .sort()
     
